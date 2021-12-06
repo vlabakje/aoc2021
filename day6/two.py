@@ -1,14 +1,12 @@
 def main():
+    # dict mapping fish age to number of fish
     state = read_lanternfish()
-    for day in range(256):
-        #print(f"After {day=} : {state=}")
-        new = 0
-        for i in range(8):
-            state[i], old = state[i+1], state[i]
-            if i == 0:
-                new = old
-        state[6] += new
-        state[8] = new
+    for _ in range(256):
+        new_fish = state[0]
+        # every fish age decreases by one, so the dict shifts left
+        state = dict((i, state[i+1]) for i in range(8))
+        state[6] += new_fish
+        state[8] = new_fish
     return sum(state.values())
 
 def read_lanternfish():
