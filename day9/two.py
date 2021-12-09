@@ -11,7 +11,7 @@ class Grid():
 
     def neighbours(self, x, y):
         for nx, ny in self.neighbour_coords(x, y):
-            yield self.grid[ny][nx]
+            yield self[nx][ny]
 
     def neighbour_coords(self, x, y):
         for dx, dy in ((-1, 0), (0, -1), (1, 0), (0, 1)):
@@ -23,7 +23,7 @@ class Grid():
     def low_points(self):
         for x in range(self.x):
             for y in range(self.y):
-                if self.grid[y][x] < min(self.neighbours(x, y)):
+                if self[x][y] < min(self.neighbours(x, y)):
                     # print(f"{x=} {y=} {self.grid[y][x]=} {min(self.neighbours(x, y))=}")
                     yield x, y
 
@@ -38,7 +38,7 @@ class Grid():
                 seen.add((x, y))
                 for nx, ny in self.neighbour_coords(x, y):
                     if (nx, ny) not in seen:
-                        if self.grid[ny][nx] != 9:
+                        if self[nx][ny] != 9:
                             yield nx, ny
                             seen.add((nx, ny))
                             todo_next.add((nx, ny))
@@ -46,6 +46,9 @@ class Grid():
 
     def basin_size(self, x, y):
         return len(list(self.basin_coords(x, y)))
+
+    def __getitem__(self, item):
+        return [line[item] for line in self.grid]
 
 
 def main():
